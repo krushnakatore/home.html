@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            font-family: sans-serif;
+        }
+        #news{
+            display: grid;
+            grid-template-columns: repeat(4,25%);
+            justify-content: center;
+        }
+        img{
+            height:300px;
+            width:150px;
+        }
+        p{
+            width:150px;   
+        }
+        
+        button{
+            display: inline-block;
+        }
+        .box{
+            width:500px;
+            height: 700px; 
+        }
+        .img1{
+            height:300px;
+            width:150px;
+        }
+        .description{
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+        }
+    </style>
+</head>
+<body>
+    <input type = "text" id = "query" placeholder ="search" on = "main()">
+    <button onclick = "searchNews()">search</button>
+    <div id = "news"></div>
+</body>
+</html>
+<script>
+    // 5acba191cae5495bbbd27f8b5e5ecbda
+    let news = document.getElementById("news")
+
+    async function searchNews(){
+    let search_news = document.getElementById("query").value
+
+        try{
+            let res = await fetch(`https://newsapi.org/v2/everything?q=${search_news}&apiKey=5acba191cae5495bbbd27f8b5e5ecbda&maxResults=20`)
+            let data = await res.json();
+            console.log(data)
+            appendNews(data.articles);
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+    searchNews()
+
+    function appendNews(news_data){
+        news_data.forEach((articles)=>{
+            console.log(articles);
+
+
+             let div = document.createElement("div");
+             div.onclick =()=>{
+                 if(news.innerHTML!= null){
+                     news.innerHTML = null;
+                 }
+                 let box = document.createElement("div")
+                 box.classList.add("box");
+
+                 let img1 = document.createElement("img");
+                 img1.classList.add("img1");
+
+                 img1.src = articles.urlToImage
+
+                 let title1 = document.createElement("p")
+
+                 title1.textContent = articles.title;
+
+                 let description = document.createElement("p")
+                 description.classList.add("description");
+                 description.textContent = articles.description;
+
+                 box.append(img1,title1,description)
+           
+                 parent.append(box)
+                 
+             }
+
+             let img = document.createElement("img");
+
+             img.src = articles.urlToImage
+
+             let title = document.createElement("p")
+             
+             news.append(title);
+
+             title.textContent = articles.title;
+
+             div.append(img,title)
+
+             news.append(div)
+
+        })
+    }
+    async function main(){
+        let name = document.getElementById()
+    }
+</script>
